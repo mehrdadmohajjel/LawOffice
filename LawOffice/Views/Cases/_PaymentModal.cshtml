@@ -1,5 +1,6 @@
 ﻿<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalTitle" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- از modal-lg برای عریض‌تر شدن و نمایش بهتر جدول استفاده شده است -->
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="paymentModalTitle">ثبت پرداختی جدید (حق‌الوکاله)</h5>
@@ -19,34 +20,67 @@
 
                         <div class="col-md-6">
                             <label for="pay_method" class="form-label">روش پرداخت <span class="text-danger">*</span></label>
-                            <!-- فرض بر این است که Enum به این شکل است: Cash=1, Transfer=2, Cheque=3 -->
+                            <!-- دقت کنید: در کدهای JS قبلی مقدار 2 برای چک بود. لطفاً با مقادیر Enum در بک‌اند خود تطبیق دهید -->
                             <select class="form-select" id="pay_method" onchange="PaymentManager.toggleChequeFields()" required>
-                                <option value="1">نقدی</option>
-                                <option value="2">کارت به کارت / حواله</option>
-                                <option value="3">چک</option>
+                                <option value="0">نقدی</option>
+                                <option value="1">کارت به کارت / حواله</option>
+                                <option value="2">چک</option>
                             </select>
                         </div>
 
                         <div class="col-md-6">
-                            <label for="pay_date" class="form-label">تاریخ پرداخت <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control jalali-datepicker" id="pay_date" data-jdp data-jdp-only-date placeholder="انتخاب تاریخ" autocomplete="off" required>
+                            <label for="pay_transactionDate" class="form-label">تاریخ پرداخت <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control jalali-datepicker" id="pay_transactionDate" data-jdp data-jdp-only-date placeholder="انتخاب تاریخ" autocomplete="off" required>
                         </div>
 
-                        <!-- بخش مخصوص چک و فیش -->
-                        <div class="col-md-12" id="cheque_fields" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 5px; border: 1px solid #dee2e6;">
-                            <div class="mb-3">
-                                <label for="pay_ref" class="form-label">شماره پیگیری / شماره چک</label>
-                                <input type="text" class="form-control" id="pay_ref">
+                        <!-- بخش مخصوص چک -->
+                        <div class="col-md-12" id="chequeDetails" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 5px; border: 1px solid #dee2e6;">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="pay_referenceNumber" class="form-label">شماره پیگیری / شماره چک</label>
+                                    <input type="text" class="form-control" id="pay_referenceNumber">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">نام بانک <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="pay_bankName" placeholder="مثال: ملی، ملت...">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">تاریخ سررسید <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="pay_dueDate" data-jdp>
+                                </div>
                             </div>
-                            <!-- اگر فیلدهای بیشتری برای چک در دیتابیس اضافه کردید (مثل نام بانک یا تاریخ سررسید) اینجا قرار دهید -->
                         </div>
 
                         <div class="col-12">
-                            <label for="pay_desc" class="form-label">توضیحات بابت پرداخت</label>
-                            <textarea class="form-control" id="pay_desc" rows="2"></textarea>
+                            <label for="pay_description" class="form-label">توضیحات بابت پرداخت</label>
+                            <textarea class="form-control" id="pay_description" rows="2"></textarea>
                         </div>
                     </div>
                 </form>
+
+                <hr class="my-4" />
+
+                <!-- بخش تاریخچه پرداختی‌ها (منتقل شد به داخل modal-body) -->
+                <div class="mt-2">
+                    <h6 class="mb-3 text-primary">تاریخچه پرداختی‌های این پرونده</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered table-striped text-center">
+                            <thead>
+                                <tr>
+                                    <th>تاریخ</th>
+                                    <th>مبلغ (ریال)</th>
+                                    <th>نوع پرداخت</th>
+                                    <th>نام بانک/شماره پیگیری</th>
+                                    <th>وضعیت چک</th>
+                                </tr>
+                            </thead>
+                            <tbody id="casePaymentsList">
+                                <tr><td colspan="5">در حال بارگذاری...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>

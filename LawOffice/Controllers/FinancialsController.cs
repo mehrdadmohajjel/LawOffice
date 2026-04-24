@@ -1,13 +1,14 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using LawOffice.Data;
+﻿using LawOffice.Data;
 using LawOffice.Data.Entities;
 using LawOffice.Models; // یا LawOffice.Models.Financial اگر PaymentViewModel در پوشه مجزاست
 using LawOffice.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LawOffice.Controllers
 {
@@ -43,11 +44,11 @@ namespace LawOffice.Controllers
                     f.Description,
                     PaymentMethod = f.PaymentMethod.ToString(),
                     // در صورت داشتن هلپر تاریخ شمسی، اینجا استفاده کنید
-                    TransactionDate = f.TransactionDate.ToString("yyyy/MM/dd"),
+                    TransactionDate = f.TransactionDate.ToShamsiDateString("/"),
                     f.ReferenceNumber,
                     // اطلاعات مربوط به چک
                     BankName = f.BankName,
-                    DueDate = f.DueDate.HasValue ? f.DueDate.Value.ToString("yyyy/MM/dd") : null,
+                    DueDate = f.DueDate.HasValue ? f.DueDate.Value.ToShamsiDateString("/") : "",
                     ChequeStatus = f.ChequeStatus.HasValue ? f.ChequeStatus.ToString() : null
                 }).ToListAsync();
 

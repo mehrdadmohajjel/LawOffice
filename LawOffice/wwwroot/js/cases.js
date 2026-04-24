@@ -420,6 +420,7 @@ const PaymentManager = {
 
         // ریست کردن ظاهر فیلدها
         this.toggleChequeFields();
+        this.loadCasePayments(caseId);
 
         // نمایش مودال
         const modal = new bootstrap.Modal(document.getElementById('paymentModal'));
@@ -434,14 +435,57 @@ const PaymentManager = {
     // نمایش/مخفی کردن فیلدهای مربوط به چک و حواله
     toggleChequeFields: function () {
         const method = document.getElementById('pay_method').value;
-        const chequeFields = document.getElementById('cheque_fields');
+        const chequeFields = document.getElementById('chequeDetails');
 
         // اگر چک (3) یا حواله (2) انتخاب شد، فیلد شماره پیگیری نمایش داده شود
         if (method === "3" || method === "2") {
             chequeFields.style.display = 'block';
         } else {
             chequeFields.style.display = 'none';
-            document.getElementById('pay_ref').value = ''; // پاک کردن مقدار
+            document.getElementById('pay_referenceNumber').value = ''; // پاک کردن مقدار
+        }
+    },
+
+    loadCasePayments: async function (caseId) {
+        const tbody = document.getElementById('casePaymentsList');
+        if (!tbody) return;
+
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center">در حال بارگذاری...</td></tr>';
+
+        try {
+            const fetchResponse = await AuthManager.apiCall(`/Financials/GetAll?caseId=${caseId}`, { method: 'GET' });
+
+            // بررسی وضعیت موفقیت‌آمیز بودن درخواست HTTP
+            if (fetchResponse && fetchResponse.ok) {
+
+                // تبدیل پاسخ خام به JSON
+                const response = await fetchResponse.json();
+
+                if (response.success && response.data && response.data.length > 0) {
+                    tbody.innerHTML = '';
+                    response.data.forEach(payment => {
+                        let chequeStatusObj = payment.ChequeStatus;
+                        let statusText = chequeStatusObj != null ? (chequeStatusObj === 0 ? "در انتظار" : chequeStatusObj === 1 ? "پاس شده" : "برگشتی") : "-";
+
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${payment.TransactionDate || '-'}</td>
+                                <td>${payment.Amount.toLocaleString()}</td>
+                                <td>${payment.PaymentMethod === 2 ? 'چک' : (payment.PaymentMethod === 1 ? 'کارت به کارت' : 'نقدی')}</td>
+                                <td>${payment.BankName || '-'} / ${payment.ReferenceNumber || '-'}</td>
+                                <td>${payment.PaymentMethod === 2 ? statusText : '-'}</td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">هیچ پرداختی برای این پرونده ثبت نشده است.</td></tr>';
+                }
+            } else {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">خطا در دریافت اطلاعات از سرور.</td></tr>';
+            }
+        } catch (error) {
+            console.error("Error loading payments:", error);
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">خطا در پردازش اطلاعات.</td></tr>';
         }
     },
 
@@ -453,15 +497,21 @@ const PaymentManager = {
             return;
         }
 
+        const methodValue = document.getElementById('pay_method').value;
+        // اصلاح خطای دوم: تعریف متغیر isCheque (فرض بر این است که متد 2 مربوط به چک است)
+        const isCheque = (methodValue === "2");
+
         const payload = {
             CaseId: parseInt(document.getElementById('pay_caseId').value),
             ClientId: parseInt(document.getElementById('pay_clientId').value),
             Amount: parseFloat(document.getElementById('pay_amount').value),
-            PaymentMethod: parseInt(document.getElementById('pay_method').value),
-            TransactionDateShamsi: document.getElementById('pay_date').value || null,
-            Description: document.getElementById('pay_desc').value || null,
-            ReferenceNumber: document.getElementById('pay_ref').value || null,
-            Type: 1 // TransactionType.Income (درآمد/حق‌الوکاله)
+            PaymentMethod: parseInt(methodValue),
+            TransactionDateShamsi: document.getElementById('pay_transactionDate').value || null,
+            Description: document.getElementById('pay_description').value || null,
+            ReferenceNumber: document.getElementById('pay_referenceNumber').value || null,
+            Type: 1, // TransactionType.Income (درآمد/حق‌الوکاله)
+            bankName: isCheque ? document.getElementById('pay_bankName').value : null, // ارسال نام بانک
+            dueDateShamsi: isCheque ? document.getElementById('pay_dueDate').value : null
         };
 
         try {
@@ -471,15 +521,16 @@ const PaymentManager = {
                 body: JSON.stringify(payload)
             });
 
+            // اگر apiCall خروجی را parse می‌کند، نیازی به response.json() نیست، اما اگر آبجکت Response برمی‌گرداند خط زیر صحیح است:
             const result = await response.json();
 
-            // بررسی موفقیت‌آمیز بودن عملیات (بسته به ساختار خروجی API شما)
+            // بررسی موفقیت‌آمیز بودن عملیات
             if (result && result.success !== false) {
                 showSuccess(result.message || 'پرداخت با موفقیت ثبت شد.');
                 bootstrap.Modal.getInstance(document.getElementById('paymentModal')).hide();
 
-                // در صورت نیاز رفرش کردن جدول پرونده‌ها یا جدول مالی
-                // loadCases(); 
+                // بروزرسانی جدول پرداختی‌ها
+                this.loadCasePayments(payload.CaseId);
             } else {
                 showError(result.message || 'خطا در ثبت اطلاعات مالی.');
             }
