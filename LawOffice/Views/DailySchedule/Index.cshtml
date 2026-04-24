@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "برنامه روزانه";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4 align-items-center">
+        <div class="col-12 col-md-6 mb-3 mb-md-0">
+            <h4 class="mb-0"><i class="bi bi-calendar-day"></i> برنامه کاری روزانه</h4>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="input-group">
+                <span class="input-group-text">تاریخ:</span>
+                <!-- input دارای ویژگی data-jdp برای اتصال به دیت‌تایم‌پیکر جلالی است -->
+                <input type="text" id="scheduleDate" class="form-control text-center" data-jdp readonly style="background-color: white;" />
+                <button class="btn btn-outline-secondary" type="button" id="btnToday">امروز</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container اصلی برای قرارگیری کارت‌های برنامه -->
+    <div id="scheduleContainer" class="row">
+        <!-- آیتم‌ها توسط جاوااسکریپت در اینجا رندر می‌شوند -->
+    </div>
+</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/jdatetime-picker/jalalidatepicker.min.css" />
+    <style>
+        jdp-container, .jdp-container {
+            z-index: 99999 !important;
+        }
+    </style>
+}
+@section Scripts {
+    <script src="~/js/jdatetime-picker/jalalidatepicker.min.js"></script>
+    <script src="~/js/daily-schedule.js"></script>
+}

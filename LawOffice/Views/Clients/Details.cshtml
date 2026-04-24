@@ -1,0 +1,37 @@
+﻿@model LawOffice.Data.Entities.Client
+@using LawOffice.Utilities
+
+@{
+    ViewData["Title"] = "جزئیات موکل";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-info text-white">
+            <h4 class="mb-0"><i class="bi bi-person-lines-fill"></i> اطلاعات موکل: @Model.FirstName @Model.LastName</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p><strong>کد ملی:</strong> @Model.NationalCode</p>
+                    <p><strong>تاریخ تولد:</strong> @(Model.BirthDate.HasValue? Model.BirthDate.Value.ToShamsiDateString() : "ثبت نشده")</p>
+                    <p><strong>شماره تماس:</strong> @Model.PhoneNumber</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>ایمیل:</strong> @(string.IsNullOrEmpty(Model.Email) ? "ثبت نشده" : Model.Email)</p>
+                    <p><strong>تحصیلات:</strong> @Model.Education</p>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-12">
+                    <p><strong>آدرس:</strong> @(string.IsNullOrEmpty(Model.Address) ? "ثبت نشده" : Model.Address)</p>
+                    <p><strong>توضیحات:</strong> @(string.IsNullOrEmpty(Model.Notes) ? "ندارد" : Model.Notes)</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <a href="/Clients/Index" class="btn btn-secondary">بازگشت به لیست</a>
+        </div>
+    </div>
+</div>

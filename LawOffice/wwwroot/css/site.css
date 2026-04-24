@@ -1,0 +1,182 @@
+﻿html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/* Calendar Styles */
+.calendar-day {
+    cursor: pointer;
+    padding: 10px;
+    position: relative;
+    transition: background-color 0.2s;
+}
+
+    .calendar-day:hover {
+        background-color: #f8f9fa;
+    }
+
+    .calendar-day.today {
+        background-color: #e3f2fd;
+        font-weight: bold;
+    }
+
+    .calendar-day.has-appointments {
+        background-color: #fff3cd;
+    }
+
+    .calendar-day .day-number {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .calendar-day .badge {
+        font-size: 10px;
+    }
+
+/* DatePicker Inline Styles */
+.datepicker-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1050;
+}
+
+.datepicker-inline {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    z-index: 1051;
+    min-width: 320px;
+}
+
+.datepicker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+    .datepicker-header .btn-nav {
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 5px 10px;
+        color: #0d6efd;
+    }
+
+        .datepicker-header .btn-nav:hover {
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+
+    .datepicker-header .month-year {
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+.datepicker-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .datepicker-table th {
+        text-align: center;
+        padding: 8px;
+        font-weight: bold;
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .datepicker-table td {
+        text-align: center;
+        padding: 8px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+    }
+
+        .datepicker-table td:hover {
+            background-color: #e9ecef;
+        }
+
+        .datepicker-table td.day-cell {
+            font-weight: 500;
+        }
+
+        .datepicker-table td.today {
+            background-color: #0d6efd;
+            color: white;
+            font-weight: bold;
+        }
+
+            .datepicker-table td.today:hover {
+                background-color: #0b5ed7;
+            }
+.dashboard-card {
+    border-radius: 12px;
+}
+
+.dashboard-icon {
+    font-size: 2.4rem;
+}
+
+@media (max-width: 768px) {
+    .dashboard-icon {
+        font-size: 2rem;
+    }
+
+    h3 {
+        font-size: 1.4rem;
+    }
+}
+/* فیکس منوی موبایل */
+@media (max-width: 991.98px) {
+    .main-sidebar {
+        margin-left: -250px;
+        transition: margin-left 0.3s ease-in-out;
+    }
+
+    body.sidebar-open .main-sidebar {
+        margin-left: 0;
+    }
+
+    body.sidebar-open::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1037;
+    }
+}

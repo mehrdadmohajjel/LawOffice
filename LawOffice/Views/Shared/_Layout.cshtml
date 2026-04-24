@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LawOffice - سیستم مدیریت دفتر وکالت</title>
+
+    <link rel="shortcut icon" type="image/png" href="~/images/favicon.png">
+    <link href="~/vendor/jquery-nice-select/css/nice-select.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+
+    <!-- در صورت نیاز استایل‌های اختصاصی خود را اینجا قرار دهید -->
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <div id="preloader">
+        <div class="loader">
+            <span>وکیل</span><span>مُسِّن</span>
+        </div>
+    </div>
+
+    <div id="main-wrapper">
+        <!-- هدر بالا -->
+        <div class="nav-header">
+            <a href="/Dashboard/Index" class="brand-logo">
+                <svg class="logo-abbr" width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="54" height="54" rx="27" fill="#2258BF"></rect>
+                    <!-- آیکون لوگو (کوتاه شده) -->
+                </svg>
+                <div class="brand-title ms-2 text-white fw-bold fs-4">دفتر وکالت</div>
+            </a>
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="line"></span><span class="line"></span><span class="line"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="header">
+            <div class="header-content">
+                <nav class="navbar navbar-expand">
+                    <div class="collapse navbar-collapse justify-content-between">
+                        <div class="header-left">
+                            <div class="nav-item">
+                                <h3 class="mb-0 text-black">@ViewData["Title"]</h3>
+                            </div>
+                        </div>
+                        <ul class="navbar-nav header-right">
+                            <!-- نوتیفیکیشن زنگوله -->
+                            <li class="nav-item dropdown notification_dropdown">
+                                <a class="nav-link ai-icon" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
+                                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <!-- آیکون زنگوله -->
+                                        <path d="M22.75 15.8385V13.0463C22.7471 10.8855 21.9385 8.80353 20.4821 7.20735C19.0258 5.61116 17.0264 4.61555 14.875 4.41516V2.625C14.875 2.39294 14.7828 2.17038 14.6187 2.00628C14.4546 1.84219 14.2321 1.75 14 1.75C13.7679 1.75 13.5454 1.84219 13.3813 2.00628C13.2172 2.17038 13.125 2.39294 13.125 2.625V4.41534C10.9736 4.61572 8.97429 5.61131 7.51794 7.20746C6.06159 8.80361 5.25291 10.8855 5.25 13.0463V15.8383C4.26257 16.0412 3.37529 16.5784 2.73774 17.3593C2.10019 18.1401 1.75134 19.1169 1.75 20.125C1.75076 20.821 2.02757 21.4882 2.51969 21.9803C3.01181 22.4724 3.67904 22.7492 4.375 22.75H9.71346C9.91521 23.738 10.452 24.6259 11.2331 25.2636C12.0142 25.9013 12.9916 26.2497 14 26.2497C15.0084 26.2497 15.9858 25.9013 16.7669 25.2636C17.548 24.6259 18.0848 23.738 18.2865 22.75H23.625C24.321 22.7492 24.9882 22.4724 25.4803 21.9803C25.9724 21.4882 26.2492 20.821 26.25 20.125C26.2486 19.117 25.8998 18.1402 25.2622 17.3594C24.6247 16.5786 23.7374 16.0414 22.75 15.8385ZM7 13.0463C7.00232 11.2113 7.73226 9.45223 9.02974 8.15474C10.3272 6.85726 12.0863 6.12732 13.9212 6.125H14.0788C15.9137 6.12732 17.6728 6.85726 18.9703 8.15474C20.2677 9.45223 20.9977 11.2113 21 13.0463V15.75H7V13.0463Z" fill="#342E59"></path>
+                                    </svg>
+                                    <!-- عدد نوتیفیکیشن پویا -->
+                                    <span id="notifCount" class="badge light text-white bg-primary rounded-circle" style="display:none;">0</span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <div id="DZ_W_Notification1" class="widget-media dz-scroll p-3" style="height:auto;">
+                                        <ul class="timeline" id="notifList">
+                                            <!-- نوتیفیکیشن‌ها با جاوا اسکریپت اینجا پر می‌شوند -->
+                                        </ul>
+                                    </div>
+                                    <a class="all-notification" href="/Cases/Index">مشاهده همه پرونده‌ها<i class="ti-arrow-end"></i></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <!-- سایدبار منو -->
+        <div class="deznav">
+            <div class="deznav-scroll">
+                <ul class="metismenu" id="menu">
+                    <li class="dropdown header-profile">
+                        <a class="nav-link" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
+                            <img src="~/images/profile/pic1.jpg" width="20" alt="">
+                            <div class="header-info ms-3">
+                                <!-- نام و نقش پویا از auth-manager.js -->
+                                <span class="font-w600" id="navUserName">کاربر مهمان</span>
+                                <small class="text-end font-w400" id="navUserRole">نامشخص</small>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a href="javascript:void(0)" onclick="AuthManager.logout()" class="dropdown-item ai-icon">
+                                <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" class="text-danger" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                    <polyline points="16 17 21 12 16 7"></polyline>
+                                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                                </svg>
+                                <span class="ms-2">خروج</span>
+                            </a>
+                        </div>
+                    </li>
+
+                    <!-- منوهای مدیریت بر اساس Role -->
+                    <li class="role-menu" data-roles="Admin,Lawyer,Staff,Client">
+                        <a href="/Dashboard/Index" class="ai-icon" aria-expanded="false">
+                            <i class="flaticon-025-dashboard"></i><span class="nav-text">داشبورد</span>
+                        </a>
+                    </li>
+                    
+                    <li class="role-menu" data-roles="Admin,Lawyer,Staff">
+                        <a href="/DailySchedule/index" class="ai-icon" aria-expanded="false">
+                            <i class="flaticon-041-graph"></i><span class="nav-text">جلسات روزانه</span>
+                        </a>
+                    </li>
+                    <li class="role-menu" data-roles="Admin,Lawyer,Staff">
+                        <a href="/appointments/index" class="ai-icon" aria-expanded="false">
+                            <i class="flaticon-041-graph"></i><span class="nav-text">نوبت دهی</span>
+                        </a>
+                    </li>
+                    <li class="role-menu" data-roles="Admin,Lawyer,Staff">
+                        <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                            <i class="flaticon-050-info"></i><span class="nav-text">پرونده‌ها</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="/Cases/Index">لیست پرونده‌ها</a></li>
+                            <li class="role-menu" data-roles="Admin,Lawyer"><a href="/Cases/Create">ایجاد پرونده جدید</a></li>
+                        </ul>
+                    </li>
+               
+                    
+                    <li class="role-menu" data-roles="Admin,Lawyer,Staff">
+                        <a href="/CourtSessions/Index" class="ai-icon" aria-expanded="false">
+                            <i class="flaticon-041-graph"></i><span class="nav-text">جلسات دادگاه</span>
+                        </a>
+                    </li>
+                    <li class="role-menu" data-roles="Admin,Staff">
+                        <a href="/Lawyers/Index" class="ai-icon" aria-expanded="false">
+                            <i class="flaticon-086-star"></i><span class="nav-text">وکلا</span>
+                        </a>
+                    </li>
+                    <li class="role-menu" data-roles="Admin,Lawyer,Staff">
+                        <a href="/Clients/Index" class="ai-icon" aria-expanded="false">
+                            <i class="flaticon-086-star"></i><span class="nav-text">موکلین</span>
+                        </a>
+                    </li>
+
+                    <li class="role-menu" data-roles="Admin,Staff">
+                        <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                            <i class="flaticon-045-heart"></i><span class="nav-text">مدیریت کاربران</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="/Users/Index">لیست کاربران</a></li>
+                        </ul>
+                    </li>
+                    <li class="role-menu">
+                        <a class="has-arrow ai-icon" href="javascript:void(0)" aria-expanded="false" id="btnLogout" onclick="AuthManager.logout()">
+                            <i class="nav-icon bi bi-box-arrow-right"></i>
+                            <p>خروج</p>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+        <!-- محتوای اصلی -->
+        <div class="content-body">
+            <div class="container-fluid">
+                @RenderBody()
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright © Designed &amp;Mossen Law Group by   <a href="https://mohajjel.ir">Mohajjel </a> 2024</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script ها -->
+    <script src="~/vendor/global/global.min.js"></script>
+    <script src="~/vendor/jquery-nice-select/js/jquery.nice-select.min.js"></script>
+    <script src="~/js/custom.min.js"></script>
+    <script src="~/js/deznav-init.js"></script>
+
+    <!-- Auth Manager (بسیار مهم برای احراز هویت، Role ها و مشخصات کاربر) -->
+    <script src="~/js/auth-manager.js"></script>
+    <script src="~/js/toast-manager.js"></script>
+    
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,135 @@
+﻿@{
+    ViewData["Title"] = "پروفایل موکل";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <a href="/Clients" class="btn btn-sm btn-outline-secondary me-2">
+            <i class="bi bi-arrow-right me-1"></i>بازگشت
+        </a>
+        <h4 class="d-inline-block mb-0" id="clientName">در حال بارگذاری...</h4>
+    </div>
+    <button class="btn btn-outline-primary btn-sm" onclick="ClientProfile.openEditModal()">
+        <i class="bi bi-pencil me-1"></i>ویرایش اطلاعات
+    </button>
+</div>
+
+<div class="row g-4">
+    <!-- اطلاعات موکل -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                     style="width:100px;height:100px;font-size:2.5rem;" id="clientAvatar">
+                    ?
+                </div>
+                <h5 id="clientFullName">...</h5>
+                <p class="text-muted small mb-3" id="clientNationalId">...</p>
+                <div id="clientDetails" class="text-start"></div>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <i class="bi bi-graph-up me-2"></i>آمار
+            </div>
+            <div class="card-body" id="clientStats">
+                <div class="text-center py-3">
+                    <div class="spinner-border spinner-border-sm text-primary"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- پرونده‌ها و نوبت‌ها -->
+    <div class="col-md-8">
+        <div class="card mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-folder2-open me-2"></i>پرونده‌ها</span>
+                <span class="badge bg-primary" id="caseCount">0</span>
+            </div>
+            <div class="card-body p-0">
+                <div id="casesList"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-calendar-check me-2"></i>نوبت‌های آینده</span>
+                <span class="badge bg-info" id="appointmentCount">0</span>
+            </div>
+            <div class="card-body p-0">
+                <div id="appointmentsList"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal ویرایش -->
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ویرایش اطلاعات موکل</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <input type="hidden" id="clientId">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">نام <span class="text-danger">*</span></label>
+                            <input type="text" id="firstName" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">نام خانوادگی <span class="text-danger">*</span></label>
+                            <input type="text" id="lastName" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">کد ملی <span class="text-danger">*</span></label>
+                            <input type="text" id="nationalId" class="form-control" maxlength="10" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">تاریخ تولد</label>
+                            <input type="text" id="birthDate" class="form-control persian-date" placeholder="1370/01/01">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">تلفن همراه</label>
+                            <input type="tel" id="phone" class="form-control" placeholder="09123456789">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">ایمیل</label>
+                            <input type="email" id="email" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">تحصیلات</label>
+                            <select id="education" class="form-select">
+                                <option value="">انتخاب کنید...</option>
+                                <option value="Diploma">دیپلم</option>
+                                <option value="Associate">کاردانی</option>
+                                <option value="Bachelor">کارشناسی</option>
+                                <option value="Master">کارشناسی ارشد</option>
+                                <option value="PhD">دکتری</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">آدرس</label>
+                            <textarea id="address" class="form-control" rows="2"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                <button class="btn btn-primary" onclick="ClientProfile.saveEdit()">
+                    <i class="bi bi-check-lg me-1"></i>ذخیره
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/client-profile.js"></script>
+}

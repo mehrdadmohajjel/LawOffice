@@ -1,0 +1,195 @@
+﻿<!-- Views/Cases/Index.cshtml -->
+@{
+    ViewData["Title"] = "مدیریت پرونده‌ها";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-folder2-open me-2"></i>لیست پرونده‌ها</h5>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#caseModal" onclick="openCaseModal()">
+            <i class="bi bi-plus-lg me-1"></i>پرونده جدید
+        </button>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle" id="casesTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>کد پرونده</th>
+                        <th>عنوان</th>
+                        <th>نوع</th>
+                        <th>موکل</th>
+                        <th>وکیل</th>
+                        <th>وضعیت</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="casesTableBody">
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">در حال بارگذاری...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Case Modal -->
+    <div class="modal fade" id="caseModal" aria-labelledby="clientModalTitle" aria-hidden="true">
+
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="caseModalTitle">پرونده جدید</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="caseForm">
+                    <input type="hidden" id="caseId" />
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="title" class="form-label">عنوان پرونده <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="title" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">نوع پرونده (تخصص)</label>
+                            <!-- تغییر شناسه به caseTypeId -->
+                            <select class="form-select" id="caseTypeId" required>
+                                <!-- مقادیر این بخش توسط loadCaseTypesForDropdown در JS پر می‌شود -->
+                                <option value="">در حال بارگذاری...</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="clientId" class="form-label">موکل <span class="text-danger">*</span></label>
+                            <select class="form-select" id="clientId" required></select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="lawyerId" class="form-label">وکیل <span class="text-danger">*</span></label>
+                            <select class="form-select" id="lawyerId" required></select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="courtName" class="form-label">نام دادگاه</label>
+                            <input type="text" class="form-control" id="courtName" />
+                        </div>
+                        <div class="col-md-4">
+                            <label for="courtBranch" class="form-label">شعبه</label>
+                            <input type="text" class="form-control" id="courtBranch" />
+                        </div>
+                        <div class="col-md-4">
+                            <label for="courtCaseNumber" class="form-label">شماره پرونده دادگاه</label>
+                            <input type="text" class="form-control" id="courtCaseNumber" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="openDate" class="form-label">تاریخ افتتاح</label>
+                            <input type="text" class="form-control" id="openDate" data-jdp data-jdp-only-date placeholder="انتخاب تاریخ" autocomplete="off" readonly style="background-color: #fff; cursor: pointer;" />
+
+                        </div>
+                        <div class="col-md-6">
+                            <label for="status" class="form-label">وضعیت</label>
+                            <select class="form-select" id="caseStatusId">
+                                <option value="1">فعال</option>
+                                <option value="2">در انتظار / معلق</option>
+                                <option value="3">بسته شده</option>
+                                <option value="4">آرشیو</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="description" class="form-label">توضیحات</label>
+                            <textarea class="form-control" id="description" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">مبلغ کل حق‌الوکاله (ریال/تومان)</label>
+                            <input type="number" class="form-control" id="totalFee" name="totalFee">
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                <button type="button" class="btn btn-primary" onclick="saveCase()">
+                    <i class="bi bi-check-lg me-1"></i>ذخیره
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- مودال آپلود فایل -->
+<div class="modal fade" id="uploadFileModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">آپلود مستندات پرونده</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="uploadFileForm">
+                    <input type="hidden" id="uploadCaseId" name="caseId" />
+                    <div class="mb-3">
+                        <label class="form-label">انتخاب فایل</label>
+                        <input type="file" class="form-control" id="caseFile" name="file" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">توضیحات (اختیاری)</label>
+                        <textarea class="form-control" id="fileDescription" name="description" rows="2"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                <button type="button" class="btn btn-success" onclick="submitUploadFile()">آپلود فایل</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- مودال مدیریت فایل‌های پرونده -->
+<div class="modal fade" id="caseDocumentsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">مستندات پرونده</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>نام فایل</th>
+                                <th>توضیحات</th>
+                                <th>حجم (KB)</th>
+                                <th>تاریخ آپلود</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="documentsTableBody">
+                            <!-- فایل‌ها اینجا لود می‌شوند -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_PaymentModal" />
+
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/jdatetime-picker/jalalidatepicker.min.css" />
+    <style>
+        jdp-container, .jdp-container {
+            z-index: 99999 !important;
+        }
+    </style>
+}
+@section Scripts {
+    <script src="~/js/jdatetime-picker/jalalidatepicker.min.js"></script>
+
+    <script src="~/js/cases.js"></script>
+}

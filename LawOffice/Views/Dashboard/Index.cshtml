@@ -1,0 +1,94 @@
+﻿@{
+    ViewData["Title"] = "داشبورد";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" id="dashboardRoot">
+    <!-- بخش کارت‌های آماری (داینامیک از طریق JS پر می‌شود) -->
+    <div class="col-xl-3 col-lg-6 col-sm-6" id="stat-clients-container" style="display: none;">
+        <div class="widget-stat card bg-primary">
+            <div class="card-body p-4">
+                <div class="media">
+                    <span class="me-3"><i class="flaticon-050-info text-white" style="font-size: 2rem;"></i></span>
+                    <div class="media-body text-white">
+                        <p class="mb-1">موکلین سیستم</p>
+                        <h3 class="text-white" id="stat-clients">0</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-6 col-sm-6">
+        <div class="widget-stat card bg-success">
+            <div class="card-body p-4">
+                <div class="media">
+                    <span class="me-3"><i class="flaticon-025-dashboard text-white" style="font-size: 2rem;"></i></span>
+                    <div class="media-body text-white">
+                        <p class="mb-1">پرونده‌های فعال</p>
+                        <h3 class="text-white" id="stat-cases">0</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-6 col-sm-6">
+        <div class="widget-stat card bg-info">
+            <div class="card-body p-4">
+                <div class="media">
+                    <span class="me-3"><i class="flaticon-041-graph text-white" style="font-size: 2rem;"></i></span>
+                    <div class="media-body text-white">
+                        <p class="mb-1">نوبت‌های امروز</p>
+                        <h3 class="text-white" id="stat-appointments">0</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-6 col-sm-6" id="stat-sessions-container">
+        <div class="widget-stat card bg-warning">
+            <div class="card-body p-4">
+                <div class="media">
+                    <span class="me-3"><i class="flaticon-086-star text-white" style="font-size: 2rem;"></i></span>
+                    <div class="media-body text-white">
+                        <p class="mb-1">جلسات آتی</p>
+                        <h3 class="text-white" id="stat-sessions">0</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- لیست فعالیت‌ها و رویدادها -->
+    <div class="col-xl-8 col-lg-12 mt-4">
+        <div class="card">
+            <div class="card-header border-0 pb-0">
+                <h4 class="fs-20 font-w600">فعالیت‌های اخیر</h4>
+            </div>
+            <div class="card-body">
+                <div id="recentActivities" class="widget-media dz-scroll" style="height: 350px;">
+                    <div class="text-center text-muted py-4">در حال بارگذاری...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-lg-12 mt-4">
+        <div class="card">
+            <div class="card-header border-0 pb-0">
+                <h4 class="fs-20 font-w600">رویدادهای پیش رو</h4>
+            </div>
+            <div class="card-body">
+                <div id="upcomingEvents" class="widget-timeline dz-scroll style-1" style="height: 350px;">
+                    <div class="text-center text-muted py-4">در حال بارگذاری...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/dashboard.js"></script>
+}

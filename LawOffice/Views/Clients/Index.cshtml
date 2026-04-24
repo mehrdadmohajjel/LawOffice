@@ -1,0 +1,141 @@
+﻿@{
+    ViewData["Title"] = "مدیریت موکلین";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-people me-2"></i>لیست موکلین</h5>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#clientModal" onclick="openClientModal()">
+            <i class="bi bi-plus-lg me-1"></i>موکل جدید
+        </button>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle" id="clientsTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>نام و نام خانوادگی</th>
+                        <th>کد ملی</th>
+                        <th>شماره تماس</th>
+                        <th>تعداد پرونده</th>
+                        <th>تاریخ ثبت</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="clientsTableBody">
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">در حال بارگذاری...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Client Modal -->
+<div class="modal fade" id="clientModal" aria-labelledby="clientModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="clientModalTitle">موکل جدید</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="clientForm">
+                    <input type="hidden" id="clientId" />
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="firstName" class="form-label">نام <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="firstName" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="lastName" class="form-label">نام خانوادگی <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="lastName" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="nationalCode" class="form-label">کد ملی <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="nationalCode" maxlength="10" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="birthDate" class="form-label">تاریخ تولد</label>
+                            <!-- فیلد نمایشی شمسی با پشتیبانی از jalalidatepicker -->
+                            <input type="text" class="form-control" id="birthDate" data-jdp data-jdp-only-date placeholder="انتخاب تاریخ" autocomplete="off" readonly style="background-color: #fff; cursor: pointer;" />
+                            <!-- فیلد مخفی برای ارسال تاریخ میلادی به سرور -->
+                            <input type="hidden" id="birthDateGregorian" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phoneNumber" class="form-label">شماره تماس <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="phoneNumber" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">ایمیل</label>
+                            <input type="email" class="form-control" id="email" />
+                        </div>
+                        <div class="col-12">
+                            <label for="address" class="form-label">آدرس</label>
+                            <textarea class="form-control" id="address" rows="2"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="education" class="form-label">تحصیلات</label>
+@*                             <input type="text" class="form-control" id="education" /> *@                        
+                            <select id="education" class="form-select">
+                                <option value="">انتخاب کنید...</option>
+                                <option value="Diploma">دیپلم</option>
+                                <option value="Associate">کاردانی</option>
+                                <option value="Bachelor">کارشناسی</option>
+                                <option value="Master">کارشناسی ارشد</option>
+                                <option value="PhD">دکتری</option>
+                            </select>
+
+</div>
+                        <div class="col-md-6">
+                            <label for="occupation" class="form-label">شغل</label>
+                            <input type="text" class="form-control" id="occupation" />
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="createUserAccount" />
+                                <label class="form-check-label" for="createUserAccount">
+                                    ایجاد حساب کاربری برای موکل
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12 d-none" id="userAccountFields">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="username" class="form-label">نام کاربری</label>
+                                    <input type="text" class="form-control" id="username" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="password" class="form-label">رمز عبور</label>
+                                    <input type="password" class="form-control" id="password" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                <button type="button" class="btn btn-primary" onclick="saveClient()">
+                    <i class="bi bi-check-lg me-1"></i>ذخیره
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/jdatetime-picker/jalalidatepicker.min.css" />
+    <style>
+        jdp-container, .jdp-container {
+            z-index: 99999 !important;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="~/js/jdatetime-picker/jalalidatepicker.min.js"></script>
+    <script src="~/js/clients.js"></script>
+}

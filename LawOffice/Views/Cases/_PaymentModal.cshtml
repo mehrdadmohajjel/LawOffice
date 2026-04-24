@@ -1,0 +1,59 @@
+﻿<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paymentModalTitle">ثبت پرداختی جدید (حق‌الوکاله)</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="paymentForm">
+                    <!-- فیلدهای مخفی برای نگهداری شناسه‌ها -->
+                    <input type="hidden" id="pay_caseId" name="CaseId" />
+                    <input type="hidden" id="pay_clientId" name="ClientId" />
+
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label for="pay_amount" class="form-label">مبلغ (ریال) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="pay_amount" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="pay_method" class="form-label">روش پرداخت <span class="text-danger">*</span></label>
+                            <!-- فرض بر این است که Enum به این شکل است: Cash=1, Transfer=2, Cheque=3 -->
+                            <select class="form-select" id="pay_method" onchange="PaymentManager.toggleChequeFields()" required>
+                                <option value="1">نقدی</option>
+                                <option value="2">کارت به کارت / حواله</option>
+                                <option value="3">چک</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="pay_date" class="form-label">تاریخ پرداخت <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control jalali-datepicker" id="pay_date" data-jdp data-jdp-only-date placeholder="انتخاب تاریخ" autocomplete="off" required>
+                        </div>
+
+                        <!-- بخش مخصوص چک و فیش -->
+                        <div class="col-md-12" id="cheque_fields" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 5px; border: 1px solid #dee2e6;">
+                            <div class="mb-3">
+                                <label for="pay_ref" class="form-label">شماره پیگیری / شماره چک</label>
+                                <input type="text" class="form-control" id="pay_ref">
+                            </div>
+                            <!-- اگر فیلدهای بیشتری برای چک در دیتابیس اضافه کردید (مثل نام بانک یا تاریخ سررسید) اینجا قرار دهید -->
+                        </div>
+
+                        <div class="col-12">
+                            <label for="pay_desc" class="form-label">توضیحات بابت پرداخت</label>
+                            <textarea class="form-control" id="pay_desc" rows="2"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                <button type="button" class="btn btn-success" onclick="PaymentManager.save()">
+                    <i class="bi bi-check-lg me-1"></i>ثبت تراکنش
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

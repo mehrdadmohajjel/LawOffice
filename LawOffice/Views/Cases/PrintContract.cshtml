@@ -1,0 +1,123 @@
+﻿@model LawOffice.Models.ContractPrintViewModel
+@{
+    Layout = null; // این صفحه نیازی به منوها و هدر اصلی سایت ندارد
+}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>چاپ قرارداد الکترونیک وکالت</title>
+    <style>
+        body {
+            font-family: 'B Nazanin', Tahoma, Arial, sans-serif;
+            padding: 20px;
+            line-height: 2;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            background-color: #f0f0f0;
+            padding: 5px;
+            border: 1px solid #ccc;
+            margin-top: 15px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .col {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .contract-text {
+            text-align: justify;
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        @@media print {
+            .no-print
+
+        {
+            display: none;
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <button class="no-print" onclick="window.print()" style="padding: 10px; background: #007bff; color: white; border: none; cursor: pointer; margin-bottom: 20px;">
+        چاپ / دانلود PDF
+    </button>
+
+    <div class="header">
+        بسمه تعالی<br />
+        وکالت نامه و قرارداد الکترونیک وکالت
+    </div>
+
+    <div class="row">
+        <div class="col"><strong>تاریخ تنظیم:</strong> @Model.ContractDate</div>
+        <div class="col"><strong>شماره قرارداد:</strong> @Model.ContractNumber</div>
+    </div>
+
+    <div class="section-title">طرفین قرارداد - مشخصات وکیل</div>
+    <div class="row">
+        <div class="col">نام: @Model.LawyerName</div>
+        <div class="col">نام خانوادگی: @Model.LawyerLastName</div>
+        <div class="col">نام پدر: @Model.LawyerFatherName</div>
+        <div class="col">شماره ملی: @Model.LawyerNationalCode</div>
+    </div>
+    <div class="row">
+        <div class="col">پایه: @Model.LawyerLevel</div>
+        <div class="col">شماره پروانه: @Model.LawyerLicenseNumber</div>
+        <div class="col">نوع وکالت: عادی</div>
+    </div>
+
+    <div class="section-title">طرفین قرارداد - مشخصات موکل</div>
+    <div class="row">
+        <div class="col">نام: @Model.ClientName</div>
+        <div class="col">نام خانوادگی: @Model.ClientLastName</div>
+        <div class="col">نام پدر: @Model.ClientFatherName</div>
+        <div class="col">شماره ملی: @Model.ClientNationalCode</div>
+    </div>
+    <div class="row">
+        <div class="col">شماره تماس: @Model.ClientPhone</div>
+        <div class="col" style="flex: 2;">آدرس: @Model.ClientAddress</div>
+    </div>
+
+    <div class="section-title">موضوع وکالت و اختیارات</div>
+    <div class="contract-text">
+        <strong>طرح دعوا (ارائه دادخواست و شکوائیه) و یا دفاع از حقوق موکل:</strong><br />
+        تمام اختیارات راجع به دادرسی از جمله: اعتراض به رای، تجدیدنظر، فرجام خواهی، اعاده دادرسی، مصالحه و سازش، ادعای جعل یا انکار و تردید نسبت به سند طرف و استرداد سند، تعیین جاعل، ارجاع دعوا به داوری و تعیین داور، توکیل، تعیین مصدق و کارشناس، دعوای خسارت، استرداد دادخواست یا دعوا، جلب شخص ثالث و دفاع از دعوای جلب ثالث، ورود شخص ثالث و دفاع از دعوای ورود ثالث...
+    </div>
+
+    <div class="section-title">شرایط و حق‌الوکاله</div>
+    <div class="contract-text">
+        مبلغ قرارداد وجه نقدی به مبلغ <strong>@Model.FeeAmount</strong> می‌باشد.<br />
+        این قرارداد تحت ماده ۱۹ لایحه قانونی استقلال کانون وکلای دادگستری، ماده ۱۰ قانون مدنی و ماده ۲ آیین نامه تعرفه حق الوکاله تنظیم گردیده است. وکیل هیچ‌گونه تضمینی در خصوص نتیجه پرونده ارائه نمی‌دهد و موکل با آگاهی کامل از شرایط و خطرات احتمالی این قرارداد را امضا می‌نماید. صحت مدارک ارائه شده بر عهده موکل می‌باشد.
+    </div>
+
+    <div class="row" style="margin-top: 50px; text-align: center;">
+        <div class="col"><strong>امضا و اثر انگشت موکل</strong></div>
+        <div class="col"><strong>مهر و امضا وکیل</strong></div>
+    </div>
+
+    <script>
+        // به محض باز شدن صفحه، دیالوگ پرینت باز می‌شود (کاربر می‌تواند Save as PDF را انتخاب کند)
+        window.onload = function() {
+            window.print();
+        }
+    </script>
+</body>
+</html>

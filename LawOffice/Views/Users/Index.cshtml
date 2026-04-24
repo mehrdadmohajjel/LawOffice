@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = "مدیریت کاربران";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4 align-items-center">
+        <div class="col-6">
+            <h4 class="mb-0 fw-bold"><i class="bi bi-people-fill text-primary me-2"></i>کاربران سیستم</h4>
+        </div>
+        <div class="col-6 text-end">
+            <button class="btn btn-primary" onclick="openUserModal()">
+                <i class="bi bi-person-plus"></i> <span class="d-none d-md-inline">کاربر جدید</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- محل قرارگیری کارت‌های کاربران -->
+    <div id="usersContainer" class="row">
+        <!-- جاوااسکریپت اینجا را پر می‌کند -->
+    </div>
+</div>
+
+<!-- Modal فرم کاربر -->
+<div class="modal fade" id="userModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title fw-bold" id="modalTitle">ایجاد کاربر</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="userForm">
+                    <input type="hidden" id="userId" value="0" />
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">نام <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="firstName" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">نام خانوادگی <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="lastName" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" dir="ltr">Username <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control text-start" id="username" dir="ltr" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" dir="ltr">Password</label>
+                            <input type="password" class="form-control text-start" id="password" dir="ltr" placeholder="خالی برای عدم تغییر">
+                            <small class="text-muted" id="passwordHelp" style="font-size:11px;">برای کاربر جدید الزامی است.</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">شماره موبایل</label>
+                            <input type="text" class="form-control text-start" id="phoneNumber" dir="ltr">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">نقش کاربری <span class="text-danger">*</span></label>
+                            <select class="form-select" id="role" required>
+                                <option value="0">مدیر سیستم (Admin)</option>
+                                <option value="1">موکل (Client)</option>
+                                <option value="2">وکیل (Lawyer)</option>
+                                <option value="3">کارمند (Staff)</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">ایمیل</label>
+                            <input type="email" class="form-control text-start" id="email" dir="ltr">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                <button type="button" class="btn btn-success" onclick="saveUser()"><i class="bi bi-check2"></i> ذخیره</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/users.js"></script>
+}

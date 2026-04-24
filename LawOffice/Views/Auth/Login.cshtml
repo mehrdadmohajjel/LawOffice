@@ -1,0 +1,88 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html dir="rtl" lang="fa" class="h-100">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>پانل مدیریت - ورود</title>
+    <!-- اضافه کردن Bootstrap Icons برای آیکون‌های چشم و ورود -->
+    <link rel="shortcut icon" type="image/png" href="~/images/favicon.png">
+    <link href="~/css/style.css" rel="stylesheet">
+</head>
+<body class="vh-100">
+    <div class="authincation h-100">
+        <div class="container h-100">
+            <div class="row justify-content-center h-100 align-items-center">
+                <div class="col-md-6">
+                    <div class="authincation-content">
+                        <div class="row no-gutters">
+                            <div class="col-xl-12">
+                                <div class="auth-form">
+                                    <div class="text-center mb-3">
+                                        <a href="#"><img src="~/images/logo-full.png" alt=""></a>
+                                    </div>
+                                    <h4 class="text-center mb-4">وارد حساب کاربری خود شوید</h4>
+
+                                    <!-- آلرت برای نمایش خطاهای سرور -->
+                                    <div id="errorAlert" class="alert alert-danger d-none text-center mb-3" role="alert"></div>
+
+<form id="loginForm" onsubmit="event.preventDefault();">
+                                        <div class="mb-3">
+                                            <label class="mb-1" for="username"><strong>نام کاربری یا ایمیل</strong></label>
+                                            <input type="text" id="username" class="form-control" placeholder="نام کاربری خود را وارد کنید" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="mb-1" for="password"><strong>کلمه عبور</strong></label>
+                                            <!-- ساختار جدید برای دکمه نمایش/مخفی کردن رمز عبور -->
+                                            <div class="input-group">
+                                                <input type="password" id="password" class="form-control" placeholder="رمز عبور خود را وارد کنید" required>
+                                                <button type="button" class="input-group-text bg-transparent" id="togglePassword">
+                                                    <i class="bi bi-eye text-primary"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-between mt-4 mb-2">
+                                            <div class="mb-3">
+                                                <div class="form-check custom-checkbox ms-1">
+                                                    <!-- آیدی به rememberMe تغییر یافت -->
+                                                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                                                    <label class="form-check-label" for="rememberMe">ترجیح من را به خاطر بسپار</label>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <a href="#">رمز عبور را فراموش کرده اید؟</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-center">
+                                            <!-- آیدی به btnLogin تغییر یافت -->
+                                            <button type="submit" id="btnLogin" class="btn btn-primary btn-block">
+                                                <i class="bi bi-box-arrow-in-left me-2"></i>ورود به سیستم
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                    <div class="new-account mt-3">
+                                        <p>حساب کاربری ندارید؟ <a class="text-primary" href="#">ثبت نام</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/vendor/global/global.min.js"></script>
+    <script src="~/js/custom.min.js"></script>
+    <script src="~/js/deznav-init.js"></script>
+    <script src="~/js/auth-manager.js"></script>
+    <script src="~/js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+﻿@{
+    ViewData["Title"] = "جزئیات پرونده";
+}
+
+<!-- نگهداری شناسه پرونده برای استفاده در جاوااسکریپت -->
+<input type="hidden" id="caseIdHidden" value="@ViewBag.CaseId" />
+
+<div class="row mb-4 mt-3">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+        <h3 id="pageTitle" class="mb-0">بارگذاری جزئیات...</h3>
+        <a href="/Cases/Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-right me-1"></i> بازگشت به لیست
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <!-- ستون سمت راست: اطلاعات پرونده و دادگاه -->
+    <div class="col-md-8">
+        <!-- کارت اطلاعات اصلی -->
+        <div class="card mb-4 shadow-sm border-0">
+            <div class="card-header bg-primary text-white">
+                <h6 class="mb-0 mt-1"><i class="bi bi-info-circle me-2"></i> اطلاعات اصلی پرونده</h6>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6"><strong>کد پرونده:</strong> <span id="lblCaseCode"></span></div>
+                    <div class="col-md-6"><strong>عنوان:</strong> <span id="lblTitle"></span></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6"><strong>تخصص/نوع:</strong> <span id="lblCaseType"></span></div>
+                    <div class="col-md-6"><strong>وضعیت:</strong> <span id="lblStatus"></span></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6"><strong>تاریخ ثبت:</strong> <span id="lblOpenDate" dir="ltr"></span></div>
+                    <div class="col-md-6"><strong>تاریخ خاتمه:</strong> <span id="lblCloseDate" dir="ltr"></span></div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <strong>توضیحات:</strong>
+                        <p id="lblDescription" class="mt-2 text-muted border p-2 rounded bg-light"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- کارت اطلاعات دادگاه -->
+        <div class="card mb-4 shadow-sm border-0">
+            <div class="card-header bg-info text-white">
+                <h6 class="mb-0 mt-1"><i class="bi bi-bank me-2"></i> اطلاعات دادگاه</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4"><strong>نام دادگاه:</strong> <span id="lblCourtName"></span></div>
+                    <div class="col-md-4"><strong>شعبه:</strong> <span id="lblCourtBranch"></span></div>
+                    <div class="col-md-4"><strong>شماره کلاسه:</strong> <span id="lblCourtCaseNumber"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ستون سمت چپ: اشخاص مرتبط -->
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm border-0">
+            <div class="card-header bg-success text-white">
+                <h6 class="mb-0 mt-1"><i class="bi bi-people me-2"></i> اشخاص مرتبط</h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <h6 class="text-secondary"><i class="bi bi-person-check me-1"></i> <strong>موکل:</strong></h6>
+                    <div class="ps-3">
+                        <span id="lblClientName"></span><br />
+                        <small class="text-muted" id="lblClientPhone" dir="ltr"></small>
+                    </div>
+                </div>
+                <hr />
+                <div class="mb-3">
+                    <h6 class="text-secondary"><i class="bi bi-briefcase me-1"></i> <strong>وکیل:</strong></h6>
+                    <div class="ps-3"><span id="lblLawyerName"></span></div>
+                </div>
+                <hr />
+                <div class="mb-3">
+                    <h6 class="text-secondary"><i class="bi bi-person-x me-1"></i> <strong>طرف دعوی:</strong></h6>
+                    <div class="ps-3"><span id="lblOpponentName"></span></div>
+                </div>
+                <div class="mb-3">
+                    <h6 class="text-secondary"><i class="bi bi-briefcase-fill me-1"></i> <strong>وکیل طرف دعوی:</strong></h6>
+                    <div class="ps-3"><span id="lblOpponentLawyer"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- بخش تب‌ها برای یادداشت‌ها -->
+<div class="card shadow-sm border-0 mb-5">
+    <div class="card-header bg-white pb-0">
+        <ul class="nav nav-tabs border-bottom-0" id="detailTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-bold" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes" type="button" role="tab">
+                    <i class="bi bi-journal-text me-1"></i> یادداشت‌ها
+                </button>
+            </li>
+            <!-- می‌توانید تب‌های مستندات و جلسات دادگاه را نیز در آینده به اینجا اضافه کنید -->
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content" id="detailTabsContent">
+            <!-- تب یادداشت‌ها -->
+            <div class="tab-pane fade show active" id="notes" role="tabpanel">
+                <button class="btn btn-sm btn-primary mb-3" onclick="CaseDetail.openNoteModal()">
+                    <i class="bi bi-plus-lg me-1"></i> افزودن یادداشت جدید
+                </button>
+                <div id="notesContainer">
+                    <div class="text-center text-muted py-3">در حال بارگذاری یادداشت‌ها...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal یادداشت -->
+<div class="modal fade" id="noteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="noteModalTitle">یادداشت جدید</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="noteId">
+                <div class="mb-3">
+                    <label class="form-label">عنوان</label>
+                    <input type="text" id="noteTitle" class="form-control" placeholder="عنوان یادداشت">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">متن <span class="text-danger">*</span></label>
+                    <textarea id="noteContent" class="form-control" rows="5" placeholder="متن یادداشت..." required></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                <button class="btn btn-primary" onclick="CaseDetail.saveNote()">
+                    <i class="bi bi-check-lg me-1"></i>ذخیره
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/case-detail.js"></script>
+}
